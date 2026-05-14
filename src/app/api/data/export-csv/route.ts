@@ -45,8 +45,7 @@ export async function GET(req: NextRequest) {
           },
           include: {
             tenant: { select: { firstName: true, lastName: true } },
-            lease: { include: { unit: { include: { property: { select: { name: true } } } } },
-          },
+           lease: { include: { unit: { include: { property: { select: { name: true } } } } } },
           orderBy: { createdAt: "desc" },
         });
         data = payments.map((p) => ({
