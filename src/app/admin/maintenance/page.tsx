@@ -62,7 +62,7 @@ export default function AdminMaintenancePage() {
     );
   }
 
-  const requests = data?.requests || [];
+ const requests = Array.isArray(data) ? data : [];
 
   return (
     <div className="space-y-6">
