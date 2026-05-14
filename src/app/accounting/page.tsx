@@ -66,7 +66,7 @@ export default function AccountingPage() {
     );
   }
 
-  const payments = paymentsData?.payments || [];
+ const payments = Array.isArray(paymentsData) ? paymentsData : [];
   const expenses = expensesData?.expenses || [];
   const categoryTotals = expensesData?.categoryTotals || {};
 
