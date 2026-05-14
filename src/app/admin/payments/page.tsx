@@ -48,7 +48,7 @@ export default function AdminPaymentsPage() {
     );
   }
 
-  const payments = data?.payments || [];
+const payments = Array.isArray(data) ? data : [];
   const totalAmount = payments.reduce((sum: number, p: any) => sum + parseFloat(p.amount), 0);
 
   return (
