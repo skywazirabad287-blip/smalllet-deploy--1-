@@ -39,17 +39,15 @@ export async function GET(req: NextRequest) {
         filename = `payments_${new Date().toISOString().split("T")[0]}.csv`;
         headers = ["ID", "Date", "Tenant", "Property", "Unit", "Amount", "Type", "Method", "Status", "Receipt"];
         const payments = await prisma.payment.findMany({
-          where: {
-            tenant: { leases: { some: { unit: { property: { landlordId } } } } },
-            isDeleted: false,
-          },
+                 const payments = await prisma.payment.findMany({
+          where: { landlordId: userId },
           include: {
             tenant: { select: { firstName: true, lastName: true } },
-           lease: { include: { unit: { include: { property: { select: { name: true } } } } } },
+            lease: { include: { unit: { include: { property: { select: { name: true } } } } } },
+          },
           orderBy: { createdAt: "desc" },
         });
         data = payments.map((p) => ({
-          ID: p.id,
           Date: p.processedAt?.toISOString() || p.createdAt.toISOString(),
           Tenant: `${p.tenant.firstName} ${p.tenant.lastName}`,
           Property: p.lease?.unit?.property?.name || "",
