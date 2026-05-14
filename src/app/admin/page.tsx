@@ -88,7 +88,7 @@ export default function AdminPage() {
     );
   }
 
-  const users = usersData?.users || [];
+  const users = Array.isArray(usersData) ? usersData : [];
 
   return (
     <div className="space-y-6">
