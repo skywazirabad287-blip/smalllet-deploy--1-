@@ -47,7 +47,7 @@ export default function AdminExpensesPage() {
     );
   }
 
-  const expenses = data?.expenses || [];
+  const expenses = Array.isArray(data) ? data : [];
   const totalExpenses = expenses.reduce((sum: number, e: any) => sum + parseFloat(e.amount), 0);
 
   return (
