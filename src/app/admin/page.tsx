@@ -48,7 +48,7 @@ export default function AdminPage() {
     );
   }
 
-  const payments = Array.isArray(data) ? data : [];
+  async function handleUserAction(userId: string, action: string) {
     try {
       const res = await fetch("/api/admin/users", {
         method: "PATCH",
