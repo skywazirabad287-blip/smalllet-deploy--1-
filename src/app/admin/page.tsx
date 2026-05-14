@@ -110,10 +110,10 @@ export default function AdminPage() {
             <CardTitle className="text-sm font-medium text-muted-foreground">Total Users</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{stats?.users?.total || 0}</div>
-            <div className="flex items-center gap-2 mt-1">
-              <Badge variant="default">{stats?.users?.active || 0} active</Badge>
-              <Badge variant="destructive">{stats?.users?.deleted || 0} deleted</Badge>
+          <div className="text-2xl font-bold">{(stats as any)?.users?.total || 0}</div>
+<div className="flex items-center gap-2 mt-1">
+  <Badge variant="default">{(stats as any)?.users?.active || 0} active</Badge>
+  <Badge variant="destructive">{(stats as any)?.users?.deleted || 0} deleted</Badge>
             </div>
           </CardContent>
         </Card>
