@@ -122,9 +122,10 @@ export default function AdminPage() {
             <CardTitle className="text-sm font-medium text-muted-foreground">Properties</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{stats?.properties?.total || 0}</div>
-            <p className="text-xs text-muted-foreground mt-1">
-              {stats?.properties?.units || 0} units · {stats?.properties?.tenants || 0} tenants
+           <div className="text-2xl font-bold">{(stats as any)?.properties?.total || 0}</div>
+<p className="text-xs text-muted-foreground mt-1">
+  {(stats as any)?.properties?.units || 0} units · {(stats as any)?.properties?.tenants || 0} tenants
+</p>
             </p>
           </CardContent>
         </Card>
