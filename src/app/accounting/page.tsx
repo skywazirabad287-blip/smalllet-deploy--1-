@@ -66,9 +66,9 @@ export default function AccountingPage() {
     );
   }
 
- const payments = Array.isArray(paymentsData) ? paymentsData : [];
-  const expenses = expensesData?.expenses || [];
-  const categoryTotals = expensesData?.categoryTotals || {};
+const payments = Array.isArray(paymentsData) ? paymentsData : [];
+const expenses = Array.isArray(expensesData) ? expensesData : [];
+const categoryTotals = {};
 
   const totalIncome = payments
     .filter((p: any) => p.status === "COMPLETED")
