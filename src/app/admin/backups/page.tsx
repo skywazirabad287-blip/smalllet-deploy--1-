@@ -29,7 +29,8 @@ export default function AdminBackupsPage() {
   const createMutation = useMutation({
     mutationFn: () => api.post("/admin/backup", { compress: true }),
     onSuccess: (data) => {
-      toast({ title: "Backup created", description: `Size: ${(data.size / 1024 / 1024).toFixed(2)} MB` });
+   const backupData = data as any;
+toast({ title: "Backup created", description: `Size: ${(backupData.size / 1024 / 1024).toFixed(2)} MB` });
       queryClient.invalidateQueries({ queryKey: ["admin-backups"] });
       setIsCreating(false);
     },
