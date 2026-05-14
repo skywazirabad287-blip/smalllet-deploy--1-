@@ -39,7 +39,6 @@ export async function GET(req: NextRequest) {
         filename = `payments_${new Date().toISOString().split("T")[0]}.csv`;
         headers = ["ID", "Date", "Tenant", "Property", "Unit", "Amount", "Type", "Method", "Status", "Receipt"];
         const payments = await prisma.payment.findMany({
-                 const payments = await prisma.payment.findMany({
           where: { landlordId: userId },
           include: {
             tenant: { select: { firstName: true, lastName: true } },
