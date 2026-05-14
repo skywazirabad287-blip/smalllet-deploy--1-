@@ -56,7 +56,7 @@ toast({ title: "Backup created", description: `Size: ${(backupData.size / 1024 /
     );
   }
 
-  const backups = data?.backups || [];
+ const backups = Array.isArray(data) ? data : [];
 
   return (
     <div className="space-y-6">
