@@ -55,7 +55,7 @@ export default function AdminBackupsPage() {
     );
   }
 
-  const backups = data?.backups || [];
+  const backups = Array.isArray(data) ? data : [];
 
   return (
     <div className="space-y-6">

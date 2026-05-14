@@ -32,7 +32,7 @@ export default function AdminLeasesPage() {
     );
   }
 
-  const leases = data?.leases || [];
+  const leases = Array.isArray(data) ? data : [];
 
   return (
     <div className="space-y-6">

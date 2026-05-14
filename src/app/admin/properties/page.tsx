@@ -69,7 +69,7 @@ export default function AdminPropertiesPage() {
     );
   }
 
-  const properties = data?.properties || [];
+  const properties = Array.isArray(data) ? data : [];
 
   return (
     <div className="space-y-6">

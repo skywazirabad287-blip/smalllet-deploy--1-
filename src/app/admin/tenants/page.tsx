@@ -58,7 +58,7 @@ export default function AdminTenantsPage() {
     );
   }
 
-  const tenants = data?.tenants || [];
+  const tenants = Array.isArray(data) ? data : [];
 
   return (
     <div className="space-y-6">

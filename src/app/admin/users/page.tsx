@@ -87,7 +87,7 @@ export default function AdminUsersPage() {
     );
   }
 
-  const users = data?.users || [];
+  const users = Array.isArray(data) ? data : [];
   const pagination = data?.pagination;
 
   return (

@@ -35,7 +35,7 @@ export default function PropertiesPage() {
     );
   }
 
-  const properties = data?.properties || [];
+  const properties = Array.isArray(data) ? data : [];
 
   return (
     <div className="space-y-6">

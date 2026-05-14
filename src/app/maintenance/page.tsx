@@ -54,7 +54,7 @@ export default function MaintenancePage() {
     );
   }
 
-  const requests = data?.requests || [];
+  const requests = Array.isArray(data) ? data : [];
   const activeRequests = requests.filter((r: any) =>
     !["COMPLETED", "CANCELLED"].includes(r.status)
   );
