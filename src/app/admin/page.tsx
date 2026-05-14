@@ -57,7 +57,6 @@ export default function AdminPage() {
     } catch (error) {
       toast({ title: "Error", description: "Cleanup failed" });
     }
-  }
 
   async function handleUserAction(userId: string, action: string) {
     try {
@@ -77,9 +76,9 @@ export default function AdminPage() {
 
   if (statsLoading || usersLoading) {
     return (
-      <div className="space-y-6">
-        <Skeleton className="h-8 w-48" />
-        <div className="grid gap-4 md:grid-cols-4">
+      </div> className="space-y-6">
+        <Skeleton className="h-8 w-48" /> ))}
+       </div> className="grid gap-4 md:grid-cols-4">
           {Array.from({ length: 4 }).map((_, i) => (
             <Skeleton key={i} className="h-32" />
                </div>
