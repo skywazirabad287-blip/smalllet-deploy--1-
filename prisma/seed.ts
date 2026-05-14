@@ -283,7 +283,7 @@ async function main() {
         amount: parseFloat(lease.rentAmount.toString()),
         dueDate: new Date(currentDate.getFullYear(), currentDate.getMonth(), 5),
         description: `Rent for ${currentDate.toLocaleString("default", { month: "long", year: "numeric" })}`,
-        status: isPaid ? "PAID" : isOverdue ? "OVERDUE" : "PENDING",
+       status: (isPaid ? "PAID" : isOverdue ? "OVERDUE" : "PENDING") as any,
         paidAmount: isPaid ? parseFloat(lease.rentAmount.toString()) : 0,
         lateFeeApplied: isOverdue,
         lateFeeAmount: isOverdue ? 50 : 0,

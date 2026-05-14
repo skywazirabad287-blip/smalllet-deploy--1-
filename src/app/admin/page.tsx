@@ -1,37 +1,28 @@
 "use client";
 
+import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { api } from "@/lib/api";
-import { formatCurrency, formatDate } from "@/lib/utils";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { useToast } from "@/hooks/use-toast";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   Users,
   Building2,
-  DollarSign,
+  CreditCard,
   Wrench,
-  TrendingUp,
-  TrendingDown,
-  AlertTriangle,
-  CheckCircle2,
   Trash2,
   RotateCcw,
   Shield,
-  BarChart3,
 } from "lucide-react";
-import { toast } from "@/hooks/use-toast";
 
 export default function AdminPage() {
-  const { data: stats, isLoading: statsLoading } = useQuery({
+  const { toast } = useToast();
+  const [isCreating, setIsCreating] = useState(false);
+
+  const { data: statsData, isLoading: statsLoading } = useQuery({
     queryKey: ["admin-stats"],
     queryFn: () => api.get("/admin/stats"),
   });
@@ -41,22 +32,20 @@ export default function AdminPage() {
     queryFn: () => api.get("/admin/users"),
   });
 
-  async function handleCleanup() {
-    try {
-      const res = await fetch("/api/admin/cleanup", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-      });
-      const data = await res.json();
-      if (data.success) {
-        toast({
-          title: "Cleanup completed",
-          description: `${data.totalDeleted} records permanently deleted.`,
-        });
-      }
-    } catch (error) {
-      toast({ title: "Error", description: "Cleanup failed" });
-    }
+  const stats = statsData || {};
+  const users = Array.isArray(usersData) ? usersData : [];
+
+  if (statsLoading || usersLoading) {
+    return (
+      <div className="space-y-6">
+        <Skeleton className="h-8 w-48" />
+        <div className="grid gap-4 md:grid-cols-4">
+          {Array.from({ length: 4 }).map((_, i) => (
+            <Skeleton key={i} className="h-32" />
+          ))}
+        </div>
+      </div>
+    );
   }
 
   async function handleUserAction(userId: string, action: string) {
@@ -75,21 +64,6 @@ export default function AdminPage() {
     }
   }
 
-  if (statsLoading || usersLoading) {
-    return (
-      <div className="space-y-6">
-        <Skeleton className="h-8 w-48" />
-        <div className="grid gap-4 md:grid-cols-4">
-          {Array.from({ length: 4 }).map((_, i) => (
-            <Skeleton key={i} className="h-32" />
-          ))}
-        </div>
-      </div>
-    );
-  }
-
-  const users = usersData?.users || [];
-
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
@@ -97,219 +71,114 @@ export default function AdminPage() {
           <h1 className="text-3xl font-bold tracking-tight">Admin Dashboard</h1>
           <p className="text-muted-foreground">System overview and user management</p>
         </div>
-        <Button variant="outline" onClick={handleCleanup}>
-          <Trash2 className="mr-2 h-4 w-4" />
+        <Button variant="outline" onClick={() => {}}>
           Run Cleanup
         </Button>
       </div>
 
-      {/* Stats Grid */}
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+      <div className="grid gap-4 md:grid-cols-4">
         <Card>
-          <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium text-muted-foreground">Total Users</CardTitle>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Total Users</CardTitle>
+            <Users className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{stats?.users?.total || 0}</div>
+            <div className="text-2xl font-bold">{(stats as any)?.users?.total || 0}</div>
             <div className="flex items-center gap-2 mt-1">
-              <Badge variant="default">{stats?.users?.active || 0} active</Badge>
-              <Badge variant="destructive">{stats?.users?.deleted || 0} deleted</Badge>
+              <Badge variant="default">{(stats as any)?.users?.active || 0} active</Badge>
+              <Badge variant="destructive">{(stats as any)?.users?.deleted || 0} deleted</Badge>
             </div>
           </CardContent>
         </Card>
+
         <Card>
-          <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium text-muted-foreground">Properties</CardTitle>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Properties</CardTitle>
+            <Building2 className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{stats?.properties?.total || 0}</div>
+            <div className="text-2xl font-bold">{(stats as any)?.properties?.total || 0}</div>
             <p className="text-xs text-muted-foreground mt-1">
-              {stats?.properties?.units || 0} units · {stats?.properties?.tenants || 0} tenants
+              {(stats as any)?.properties?.units || 0} units · {(stats as any)?.properties?.tenants || 0} tenants
             </p>
           </CardContent>
         </Card>
+
         <Card>
-          <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium text-muted-foreground">Total Revenue</CardTitle>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Revenue</CardTitle>
+            <CreditCard className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{formatCurrency(stats?.financials?.totalRevenue || 0)}</div>
-            <div className="flex items-center gap-1 mt-1">
-              {stats?.users?.growthRate >= 0 ? (
-                <TrendingUp className="h-3 w-3 text-emerald-500" />
-              ) : (
-                <TrendingDown className="h-3 w-3 text-red-500" />
-              )}
-              <span className="text-xs text-muted-foreground">
-                {stats?.users?.growthRate || 0}% user growth
-              </span>
-            </div>
+            <div className="text-2xl font-bold">${(stats as any)?.revenue?.total || 0}</div>
+            <p className="text-xs text-muted-foreground mt-1">
+              {(stats as any)?.revenue?.thisMonth || 0} this month
+            </p>
           </CardContent>
         </Card>
+
         <Card>
-          <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium text-muted-foreground">Pending Maintenance</CardTitle>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Maintenance</CardTitle>
+            <Wrench className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{stats?.maintenance?.pending || 0}</div>
+            <div className="text-2xl font-bold">{(stats as any)?.maintenance?.pending || 0}</div>
             <p className="text-xs text-muted-foreground mt-1">
-              of {stats?.maintenance?.total || 0} total requests
+              {(stats as any)?.maintenance?.inProgress || 0} in progress
             </p>
           </CardContent>
         </Card>
       </div>
 
-      <Tabs defaultValue="users">
-        <TabsList>
-          <TabsTrigger value="users">
-            <Users className="h-4 w-4 mr-2" />
-            Users
-          </TabsTrigger>
-          <TabsTrigger value="subscriptions">
-            <BarChart3 className="h-4 w-4 mr-2" />
-            Subscriptions
-          </TabsTrigger>
-          <TabsTrigger value="financials">
-            <DollarSign className="h-4 w-4 mr-2" />
-            Financials
-          </TabsTrigger>
-        </TabsList>
-
-        <TabsContent value="users" className="space-y-4">
-          <Card>
-            <CardHeader>
-              <CardTitle>User Management</CardTitle>
-              <CardDescription>Manage all registered users</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
-                {users.map((user: any) => (
-                  <div
-                    key={user.id}
-                    className="flex items-center justify-between p-4 rounded-lg border"
+      <Card>
+        <CardHeader>
+          <CardTitle>User Management</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="space-y-4">
+            {users.map((user: any) => (
+              <div key={user.id} className="flex items-center justify-between p-4 border rounded-lg">
+                <div>
+                  <p className="font-medium">{user.name || user.email}</p>
+                  <p className="text-sm text-muted-foreground">{user.email}</p>
+                  <div className="flex gap-2 mt-1">
+                    <Badge variant={user.role === "LANDLORD" ? "default" : "secondary"}>
+                      {user.role}
+                    </Badge>
+                    <Badge variant={user.isDeleted ? "destructive" : "outline"}>
+                      {user.isDeleted ? "Deleted" : "Active"}
+                    </Badge>
+                  </div>
+                </div>
+                <div className="flex gap-2">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => handleUserAction(user.id, "suspend")}
                   >
-                    <div className="space-y-1">
-                      <div className="flex items-center gap-2">
-                        <p className="font-medium">{user.name || "Unnamed"}</p>
-                        <Badge variant={user.isDeleted ? "destructive" : "default"}>
-                          {user.isDeleted ? "Deleted" : "Active"}
-                        </Badge>
-                        <Badge variant="secondary">{user.role}</Badge>
-                      </div>
-                      <p className="text-sm text-muted-foreground">{user.email}</p>
-                      <p className="text-xs text-muted-foreground">
-                        {user._count.properties} properties · {user._count.teamMembers} team members
-                        {user.subscriptionTier && ` · ${user.subscriptionTier}`}
-                      </p>
-                      <p className="text-xs text-muted-foreground">
-                        Joined {formatDate(user.createdAt)}
-                        {user.deletedAt && ` · Deleted ${formatDate(user.deletedAt)}`}
-                      </p>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      {user.isDeleted ? (
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          onClick={() => handleUserAction(user.id, "restore")}
-                        >
-                          <RotateCcw className="h-4 w-4 mr-1" />
-                          Restore
-                        </Button>
-                      ) : (
-                        <>
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            onClick={() => handleUserAction(user.id, "suspend")}
-                          >
-                            <AlertTriangle className="h-4 w-4 mr-1" />
-                            Suspend
-                          </Button>
-                          <Button
-                            variant="destructive"
-                            size="sm"
-                            onClick={() => handleUserAction(user.id, "force_delete")}
-                          >
-                            <Trash2 className="h-4 w-4 mr-1" />
-                            Delete
-                          </Button>
-                        </>
-                      )}
-                    </div>
-                  </div>
-                ))}
+                    <Shield className="h-4 w-4" />
+                  </Button>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => handleUserAction(user.id, "restore")}
+                  >
+                    <RotateCcw className="h-4 w-4" />
+                  </Button>
+                  <Button
+                    variant="destructive"
+                    size="sm"
+                    onClick={() => handleUserAction(user.id, "delete")}
+                  >
+                    <Trash2 className="h-4 w-4" />
+                  </Button>
+                </div>
               </div>
-            </CardContent>
-          </Card>
-        </TabsContent>
-
-        <TabsContent value="subscriptions" className="space-y-4">
-          <div className="grid gap-4 md:grid-cols-2">
-            <Card>
-              <CardHeader>
-                <CardTitle>By Tier</CardTitle>
-              </CardHeader>
-              <CardContent>
-                {stats?.subscriptions?.byTier?.map((tier: any) => (
-                  <div key={tier.subscriptionTier} className="flex items-center justify-between py-2">
-                    <span className="text-sm">{tier.subscriptionTier}</span>
-                    <Badge>{tier._count.id} users</Badge>
-                  </div>
-                ))}
-              </CardContent>
-            </Card>
-            <Card>
-              <CardHeader>
-                <CardTitle>By Status</CardTitle>
-              </CardHeader>
-              <CardContent>
-                {stats?.subscriptions?.byStatus?.map((status: any) => (
-                  <div key={status.subscriptionStatus} className="flex items-center justify-between py-2">
-                    <span className="text-sm">{status.subscriptionStatus}</span>
-                    <Badge>{status._count.id} users</Badge>
-                  </div>
-                ))}
-              </CardContent>
-            </Card>
+            ))}
           </div>
-        </TabsContent>
-
-        <TabsContent value="financials" className="space-y-4">
-          <div className="grid gap-4 md:grid-cols-3">
-            <Card>
-              <CardHeader>
-                <CardTitle>This Month</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold text-emerald-600">
-                  {formatCurrency(stats?.financials?.thisMonthRevenue || 0)}
-                </div>
-              </CardContent>
-            </Card>
-            <Card>
-              <CardHeader>
-                <CardTitle>Last Month</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold">
-                  {formatCurrency(stats?.financials?.lastMonthRevenue || 0)}
-                </div>
-              </CardContent>
-            </Card>
-            <Card>
-              <CardHeader>
-                <CardTitle>Net Income</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold">
-                  {formatCurrency(stats?.financials?.netIncome || 0)}
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-        </TabsContent>
-      </Tabs>
+        </CardContent>
+      </Card>
     </div>
   );
 }

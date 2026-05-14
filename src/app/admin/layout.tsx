@@ -20,7 +20,7 @@ export default async function AdminLayout({
     select: { role: true },
   });
 
-  if (user?.role !== "LANDLORD" && user?.role !== "OWNER") {
+if (user?.role !== "LANDLORD" && user?.role !== "MANAGER") {
     redirect("/dashboard");
   }
 

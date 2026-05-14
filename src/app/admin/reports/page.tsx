@@ -26,10 +26,10 @@ import {
   Calendar,
   Building2,
   Users,
-  PieChart,
+  PieChartIcon,
 } from "lucide-react";
 import {
-  BarChart,
+ BarChart,
   Bar,
   XAxis,
   YAxis,

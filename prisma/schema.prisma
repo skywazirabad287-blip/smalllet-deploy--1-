@@ -169,8 +169,6 @@ model Property {
   units       Unit[]
   teamMembers TeamMember[]
   expenses    Expense[]
-  deletedAt   DateTime?
-  deletedBy   String?
   documents   Document[]
   activities  ActivityLog[]
   deletedAt   DateTime?

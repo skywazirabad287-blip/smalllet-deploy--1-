@@ -55,7 +55,7 @@ export default function AdminDocumentsPage() {
     );
   }
 
-  const documents = Array.isArray(data) ? data : [];
+ const documents = Array.isArray(data) ? data : [];
 
   return (
     <div className="space-y-6">

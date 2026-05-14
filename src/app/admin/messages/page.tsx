@@ -32,7 +32,7 @@ export default function AdminMessagesPage() {
     );
   }
 
-  const messages = Array.isArray(data) ? data : [];
+ const messages = Array.isArray(data) ? data : [];
 
   return (
     <div className="space-y-6">
