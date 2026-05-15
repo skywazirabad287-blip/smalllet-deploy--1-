@@ -66,7 +66,7 @@ export async function DELETE(req: NextRequest) {
 
       // Soft delete maintenance requests
       await tx.maintenanceRequest.updateMany({
-        where: { property: { landlordId: userId } },
+                where: {},
         data: { deletedAt: now, deletedBy: userId, isDeleted: true },
       });
 
