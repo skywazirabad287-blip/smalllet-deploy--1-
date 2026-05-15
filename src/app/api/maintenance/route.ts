@@ -28,21 +28,17 @@ export async function GET(req: NextRequest) {
     const propertyId = searchParams.get("propertyId");
     const unitId = searchParams.get("unitId");
 
-    const requests = await prisma.maintenanceRequest.findMany({
+       const requests = await prisma.maintenanceRequest.findMany({
       where: {
         ...(status && { status: status as any }),
         ...(priority && { priority: priority as any }),
-                ...(propertyId && { propertyId }),
+        ...(propertyId && { propertyId }),
         ...(unitId && { unitId }),
+      },
       include: {
-        tenant: { select: { id: true, firstName: true, lastName: true, email: true, phone: true } },
-        unit: {
-          include: {
-            property: { select: { id: true, name: true, address: true } },
-          },
-        },
-        vendor: { select: { id: true, name: true, company: true, phone: true } },
-               comments: {
+        tenant: true,
+        unit: true,
+        comments: {
           orderBy: { createdAt: "asc" },
         },
       },
