@@ -42,9 +42,8 @@ export async function GET(req: NextRequest) {
       if (!property) return NextResponse.json({ error: "Property not found" }, { status: 404 });
     }
 
-    const checklists = await prisma.complianceChecklist.findMany({
+        const checklists = await prisma.complianceChecklist.findMany({
       where: { propertyId: propertyId || undefined },
-      include: { property: { select: { name: true } } },
     });
 
     return NextResponse.json({ checklists });
