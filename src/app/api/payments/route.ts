@@ -123,8 +123,9 @@ export async function POST(req: NextRequest) {
     }
 
     const payment = await prisma.payment.create({
-      data: {
+           data: {
         ...validated,
+        landlordId: session.user.id, // Add this line
         stripePaymentIntentId,
         status: validated.method === "CARD" ? "PENDING" : "COMPLETED",
         processedAt: validated.method !== "CARD" ? new Date() : null,
