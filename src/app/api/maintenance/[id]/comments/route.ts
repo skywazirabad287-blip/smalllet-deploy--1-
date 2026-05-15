@@ -27,9 +27,7 @@ export async function POST(
         message,
         isInternal,
       },
-      include: {
-        user: { select: { id: true, name: true, image: true } },
-      },
+            // include removed - user relation does not exist in schema
     });
 
     return NextResponse.json({ comment }, { status: 201 });
