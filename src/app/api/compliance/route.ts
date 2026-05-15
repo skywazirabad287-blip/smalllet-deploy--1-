@@ -97,7 +97,7 @@ export async function PATCH(req: NextRequest) {
     const { id, itemId, completed, evidenceUrl } = await req.json();
 
     const checklist = await prisma.complianceChecklist.findFirst({
-      where: { id, property: { landlordId: session.user.id } },
+         where: { id },
     });
     if (!checklist) return NextResponse.json({ error: "Not found" }, { status: 404 });
 
