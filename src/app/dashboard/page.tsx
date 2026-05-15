@@ -119,11 +119,10 @@ export default function DashboardPage() {
     );
   }
 
-  const stats = data?.stats;
-  const revenueChartData = data?.revenueChartData || [];
-  const overdueCharges = data?.overdueCharges || [];
-  const recentActivity = data?.recentActivity || [];
-
+   const stats = (data as any)?.stats;
+  const revenueChartData = (data as any)?.revenueChartData || [];
+  const overdueCharges = (data as any)?.overdueCharges || [];
+  const recentActivity = (data as any)?.recentActivity || [];
   return (
     <div className="space-y-8">
       {/* Header */}
