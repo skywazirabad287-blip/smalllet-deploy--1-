@@ -88,8 +88,7 @@ export default function AdminUsersPage() {
   }
 
   const users = Array.isArray(data) ? data : [];
-  const pagination = data?.pagination;
-
+  const pagination = (data as any)?.pagination;
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
