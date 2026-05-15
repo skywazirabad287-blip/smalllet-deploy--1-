@@ -174,14 +174,10 @@ export async function GET(req: NextRequest) {
         where: { landlordId: userId, isActive: true },
       }),
       prisma.complianceChecklist.findMany({
-        where: {
-          property: { landlordId: userId },
-        },
-        include: {
-          property: { select: { name: true } },
-        },
+               where: {},
       }),
     ]);
+  
 
     const exportData = {
       exportedAt: new Date().toISOString(),
