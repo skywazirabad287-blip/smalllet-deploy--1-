@@ -173,6 +173,7 @@ model Property {
   activities  ActivityLog[]
   deletedAt   DateTime?
   deletedBy   String?
+  isDeleted   Boolean?  @default(false)
   messages    Message[]
 
   @@index([landlordId])
@@ -219,6 +220,7 @@ model Unit {
   expenses    Expense[]
   deletedAt   DateTime?
   deletedBy   String?
+  isDeleted   Boolean?  @default(false)
 
   @@unique([propertyId, unitNumber])
   @@index([propertyId])
@@ -344,6 +346,7 @@ enum ChargeStatus {
 
 model Payment {
   id            String        @id @default(cuid())
+  landlordId    String
   tenantId      String
   leaseId       String?
   rentChargeId  String?
@@ -433,6 +436,7 @@ model MaintenanceRequest {
   // Relations
   tenant   Tenant?  @relation(fields: [tenantId], references: [id], onDelete: SetNull)
   unit     Unit     @relation(fields: [unitId], references: [id], onDelete: Cascade)
+  property Property @relation(fields: [propertyId], references: [id], onDelete: Cascade)
   vendor   Vendor?  @relation(fields: [vendorId], references: [id], onDelete: SetNull)
   comments MaintenanceComment[]
   deletedAt   DateTime?
@@ -486,6 +490,7 @@ model MaintenanceComment {
   createdAt DateTime @default(now())
 
   request MaintenanceRequest @relation(fields: [requestId], references: [id], onDelete: Cascade)
+  user     User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
 
   @@index([requestId])
 }
@@ -713,6 +718,8 @@ model ComplianceChecklist {
   items       Json     // Array of { id, label, required, completed, completedAt, evidenceUrl }
   lastUpdated DateTime @updatedAt
   createdAt   DateTime @default(now())
+
+  property   Property @relation(fields: [propertyId], references: [id], onDelete: Cascade)
 
   @@index([propertyId])
 }
