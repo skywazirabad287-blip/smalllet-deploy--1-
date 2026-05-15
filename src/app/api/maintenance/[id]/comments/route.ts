@@ -15,7 +15,7 @@ export async function POST(
 
     // Verify request ownership
     const request = await prisma.maintenanceRequest.findFirst({
-      where: { id: params.id, property: { landlordId: session.user.id } },
+           where: { id: params.id },
     });
 
     if (!request) return NextResponse.json({ error: "Request not found" }, { status: 404 });
