@@ -49,7 +49,7 @@ export async function GET(req: NextRequest) {
         data = payments.map((p) => ({
           Date: p.processedAt?.toISOString() || p.createdAt.toISOString(),
           Tenant: `${p.tenant.firstName} ${p.tenant.lastName}`,
-          Property: p.lease?.unit?.property?.name || "",
+                   Property: p.lease?.unit?.propertyId || "",
           Unit: p.lease?.unit?.unitNumber || "",
           Amount: p.amount,
           Type: p.type,
@@ -74,7 +74,7 @@ export async function GET(req: NextRequest) {
           Category: e.category,
           Description: e.description,
           Amount: e.amount,
-          Property: e.property?.name || "",
+        Property: e.propertyId || "",
           Vendor: e.vendor || "",
           "Tax Deductible": e.taxDeductible ? "Yes" : "No",
         }));
