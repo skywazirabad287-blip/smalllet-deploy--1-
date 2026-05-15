@@ -32,11 +32,8 @@ export async function GET(req: NextRequest) {
       where: {
         ...(status && { status: status as any }),
         ...(priority && { priority: priority as any }),
-        ...(propertyId && { propertyId }),
+        ..        ...(propertyId && { propertyId }),
         ...(unitId && { unitId }),
-        property: { landlordId: session.user.id },
-        isDeleted: false,
-      },
       include: {
         tenant: { select: { id: true, firstName: true, lastName: true, email: true, phone: true } },
         unit: {
