@@ -64,7 +64,7 @@ export async function GET(req: NextRequest) {
       const monthStart = new Date(year, i, 1);
       const monthEnd = new Date(year, i + 1, 0);
       const monthPayments = payments.filter(
-        (p) => p.processedAt >= monthStart && p.processedAt <= monthEnd
+               (p) => p.processedAt && p.processedAt >= monthStart && p.processedAt <= monthEnd
       );
       const monthExpenses = expenses.filter(
         (e) => e.date >= monthStart && e.date <= monthEnd
