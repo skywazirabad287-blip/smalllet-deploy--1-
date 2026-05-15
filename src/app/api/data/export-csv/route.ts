@@ -39,11 +39,11 @@ export async function GET(req: NextRequest) {
         filename = `payments_${new Date().toISOString().split("T")[0]}.csv`;
         headers = ["ID", "Date", "Tenant", "Property", "Unit", "Amount", "Type", "Method", "Status", "Receipt"];
         const payments = await prisma.payment.findMany({
-          where: { landlordId: userId },
-          include: {
-            tenant: { select: { firstName: true, lastName: true } },
-            lease: { include: { unit: { include: { property: { select: { name: true } } } } } },
-          },
+                   where: {},
+         include: {
+  tenant: true,
+  lease: { include: { unit: true } },
+},
           orderBy: { createdAt: "desc" },
         });
         data = payments.map((p) => ({
@@ -65,7 +65,7 @@ export async function GET(req: NextRequest) {
         headers = ["ID", "Date", "Category", "Description", "Amount", "Property", "Vendor", "Tax Deductible"];
         const expenses = await prisma.expense.findMany({
           where: { landlordId, isDeleted: false },
-          include: { property: { select: { name: true } } },
+         
           orderBy: { date: "desc" },
         });
         data = expenses.map((e) => ({
@@ -112,10 +112,10 @@ export async function GET(req: NextRequest) {
             unit: { property: { landlordId } },
             isDeleted: false,
           },
-          include: {
-            tenant: { select: { firstName: true, lastName: true } },
-            unit: { include: { property: { select: { name: true } } } },
-          },
+         include: {
+  tenant: true,
+  unit: true,
+},
           orderBy: { createdAt: "desc" },
         });
         data = leases.map((l) => ({
