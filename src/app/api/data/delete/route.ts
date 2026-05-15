@@ -28,7 +28,7 @@ export async function DELETE(req: NextRequest) {
 
       // Soft delete units
       await tx.unit.updateMany({
-        where: { property: { landlordId: userId } },
+               where: {},
         data: { deletedAt: now, deletedBy: userId, status: "OFF_MARKET" },
       });
 
@@ -95,7 +95,7 @@ export async function DELETE(req: NextRequest) {
 
       // Soft delete compliance checklists
       await tx.complianceChecklist.deleteMany({
-        where: { property: { landlordId: userId } },
+                where: {},
       });
 
       // Soft delete team memberships
