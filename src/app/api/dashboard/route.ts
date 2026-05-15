@@ -119,9 +119,8 @@ export async function GET(req: NextRequest) {
     );
 
     const pendingMaintenance = await prisma.maintenanceRequest.count({
-      where: {
+            where: {
         status: { in: ["SUBMITTED", "UNDER_REVIEW", "APPROVED", "IN_PROGRESS"] },
-        property: { landlordId },
       },
     });
 
