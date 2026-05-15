@@ -304,18 +304,19 @@ async function main() {
 
   for (const charge of completedCharges) {
     await prisma.payment.create({
-      data: {
+           data: {
+        landlordId: "user_123", // Add this line
         tenantId: charge.leaseId === leases[0].id ? tenants[0].id :
                   charge.leaseId === leases[1].id ? tenants[1].id :
                   charge.leaseId === leases[2].id ? tenants[2].id : tenants[3].id,
         leaseId: charge.leaseId,
         rentChargeId: charge.id,
-        amount: parseFloat(charge.amount.toString()),
+        amount: charge.amount,
         status: "COMPLETED",
         type: "RENT",
         method: Math.random() > 0.5 ? "CARD" : "BANK_TRANSFER",
-        processedAt: new Date(charge.dueDate.getTime() + 2 * 24 * 60 * 60 * 1000),
-        receiptNumber: `SL-${Date.now()}-${Math.random().toString(36).substring(2, 6).toUpperCase()}`,
+        processedAt: new Date(charge.dueDate.getTime() + 86400000),
+        receiptNumber: `RCP-${Math.floor(Math.random() * 10000)}`,
       },
     });
   }
