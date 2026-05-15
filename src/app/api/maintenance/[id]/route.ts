@@ -64,7 +64,7 @@ export async function PATCH(
 
     // Verify ownership
     const existing = await prisma.maintenanceRequest.findFirst({
-      where: { id: params.id, property: { landlordId: session.user.id } },
+            where: { id: params.id },
     });
 
     if (!existing) return NextResponse.json({ error: "Request not found" }, { status: 404 });
