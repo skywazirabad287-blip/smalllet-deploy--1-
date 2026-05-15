@@ -25,9 +25,8 @@ export async function GET(
     if (!session?.user?.id) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
     const request = await prisma.maintenanceRequest.findFirst({
-      where: {
+           where: {
         id: params.id,
-        property: { landlordId: session.user.id },
       },
       include: {
         tenant: { select: { firstName: true, lastName: true, email: true, phone: true } },
