@@ -121,7 +121,7 @@ export async function GET(req: NextRequest) {
         data = leases.map((l) => ({
           ID: l.id,
           Tenant: `${l.tenant.firstName} ${l.tenant.lastName}`,
-          Property: l.unit.property.name,
+                    Property: l.unit.propertyId || "",
           Unit: l.unit.unitNumber,
           "Start Date": l.startDate.toISOString(),
           "End Date": l.endDate.toISOString(),
