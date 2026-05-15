@@ -59,6 +59,7 @@ model User {
   activities    ActivityLog[]
   messagesSent  Message[] @relation("SentMessages")
   messagesReceived Message[] @relation("ReceivedMessages")
+  maintenanceComments MaintenanceComment[]
 
   // Stripe
   stripeCustomerId String?
