@@ -13,7 +13,7 @@ async function verifyAdmin(req: NextRequest) {
     select: { role: true },
   });
 
-  if (user?.role !== "LANDLORD" && user?.role !== "OWNER") {
+  if (user?.role !== "LANDLORD" && user?.role !== "MANAGER") {
     return { error: "Admin access required", status: 403 };
   }
 
