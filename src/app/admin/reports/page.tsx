@@ -72,11 +72,10 @@ export default function AdminReportsPage() {
     );
   }
 
-  const summary = data?.summary || {};
-  const monthlyData = data?.monthlyData || [];
-  const expenseByCategory = data?.expenseByCategory || {};
-  const propertyPerformance = data?.propertyPerformance || [];
-
+  const summary = (data as any)?.summary || {};
+  const monthlyData = Array.isArray(data) ? data : [];
+  const expenseByCategory = (data as any)?.expenseByCategory || {};
+  const propertyPerformance = Array.isArray(data) ? data : [];
   const expenseChartData = Object.entries(expenseByCategory).map(([name, value]) => ({
     name: name.replace(/_/g, " "),
     value,
