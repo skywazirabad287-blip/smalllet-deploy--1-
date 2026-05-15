@@ -85,7 +85,7 @@ export async function POST(req: NextRequest) {
       data: {
         ...validated,
                ...((validated as any).vendorId && { vendorId: (validated as any).vendorId }),
-        ...(validated.assignedTo && { assignedTo: validated.assignedTo }),
+                ...((validated as any).assignedTo && { assignedTo: (validated as any).assignedTo }),
       },
       include: {
         tenant: { select: { firstName: true, lastName: true } },
