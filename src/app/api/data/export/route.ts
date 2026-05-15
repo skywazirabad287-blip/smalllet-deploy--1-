@@ -54,10 +54,10 @@ export async function GET(req: NextRequest) {
         },
       }),
       prisma.property.findMany({
-        where: { landlordId: userId, isDeleted: false },
+               where: { landlordId: userId },
         include: {
-          units: { where: { isDeleted: false } },
-          expenses: { where: { isDeleted: false } },
+                   units: true,
+                   expenses: true,
           documents: { where: { isDeleted: false } },
         },
       }),
