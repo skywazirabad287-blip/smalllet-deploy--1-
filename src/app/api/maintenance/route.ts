@@ -42,10 +42,7 @@ export async function GET(req: NextRequest) {
           },
         },
         vendor: { select: { id: true, name: true, company: true, phone: true } },
-        comments: {
-          include: {
-            user: { select: { id: true, name: true, image: true } },
-          },
+               comments: {
           orderBy: { createdAt: "asc" },
         },
       },
