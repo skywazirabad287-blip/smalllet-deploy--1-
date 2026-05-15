@@ -36,10 +36,7 @@ export async function GET(
           },
         },
         vendor: { select: { id: true, name: true, company: true, phone: true, email: true } },
-        comments: {
-          include: {
-            user: { select: { id: true, name: true, image: true } },
-          },
+               comments: {
           orderBy: { createdAt: "asc" },
         },
       },
