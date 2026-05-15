@@ -172,6 +172,8 @@ model Property {
   expenses    Expense[]
   documents   Document[]
   activities  ActivityLog[]
+  maintenanceRequests MaintenanceRequest[]
+  complianceChecklists ComplianceChecklist[]
   deletedAt   DateTime?
   deletedBy   String?
   isDeleted   Boolean?  @default(false)
