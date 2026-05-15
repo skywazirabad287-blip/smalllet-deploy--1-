@@ -84,7 +84,7 @@ export async function POST(req: NextRequest) {
     const request = await prisma.maintenanceRequest.create({
       data: {
         ...validated,
-        ...(validated.vendorId && { vendorId: validated.vendorId }),
+               ...((validated as any).vendorId && { vendorId: (validated as any).vendorId }),
         ...(validated.assignedTo && { assignedTo: validated.assignedTo }),
       },
       include: {
