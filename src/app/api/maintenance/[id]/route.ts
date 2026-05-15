@@ -131,7 +131,7 @@ export async function DELETE(
     if (!session?.user?.id) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
     const existing = await prisma.maintenanceRequest.findFirst({
-      where: { id: params.id, property: { landlordId: session.user.id } },
+           where: { id: params.id },
     });
 
     if (!existing) return NextResponse.json({ error: "Request not found" }, { status: 404 });
