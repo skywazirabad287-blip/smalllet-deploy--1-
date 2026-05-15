@@ -114,10 +114,7 @@ export async function GET(req: NextRequest) {
         },
       }),
       prisma.maintenanceRequest.findMany({
-        where: {
-          property: { landlordId: userId },
-          isDeleted: false,
-        },
+               where: {},
         include: {
           tenant: { select: { firstName: true, lastName: true } },
           unit: { include: { property: { select: { name: true } } } },
