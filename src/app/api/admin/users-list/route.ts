@@ -50,7 +50,7 @@ export async function GET() {
           subscriptionStatus: user.subscriptionStatus,
           stripeCustomerId: user.stripeCustomerId,
           propertiesCount: user._count.properties,
-          tenantsCount: user._count.tenants,
+                   tenantsCount: 0,
           paymentsTotal: paymentAgg._sum?.amount || 0,
                    tenantsCount: 0,
         };
