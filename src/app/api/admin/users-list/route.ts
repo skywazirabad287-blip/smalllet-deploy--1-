@@ -23,11 +23,9 @@ export async function GET() {
         subscriptionTier: true,
         subscriptionStatus: true,
         stripeCustomerId: true,
-        _count: {
+                _count: {
           select: {
             properties: true,
-            tenants: true,
-            payments: true,
           },
         },
       },
@@ -54,7 +52,7 @@ export async function GET() {
           propertiesCount: user._count.properties,
           tenantsCount: user._count.tenants,
           paymentsTotal: paymentAgg._sum?.amount || 0,
-          lastActive: user.createdAt.toISOString(),
+                   tenantsCount: 0,
         };
       })
     );
