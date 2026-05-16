@@ -52,7 +52,7 @@ export async function GET() {
           propertiesCount: user._count.properties,
                    tenantsCount: 0,
           paymentsTotal: paymentAgg._sum?.amount || 0,
-                   tenantsCount: 0,
+         
         };
       })
     );
